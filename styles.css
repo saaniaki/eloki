@@ -25,6 +25,11 @@ body {
     vertical-align: middle;
 }
 
+.top-bar span.active {
+    font-weight: bold;
+    color: #f9ab00;
+}
+
 .top-bar a {
     text-decoration: none;
     color: #fff;
@@ -46,6 +51,10 @@ header {
     text-align: center;
 }
 
+header.small{
+    padding: 25px 0 5px 0;
+}
+
 header h1 {
     font-size: 56px;
     font-weight: 300;
@@ -54,6 +63,13 @@ header h1 {
 }
 
 header h2 {
+    font-size: 35px;
+    font-weight: 300;
+    line-height: 48px;
+    margin: 5px 0 0 0;
+}
+
+header h3 {
     font-size: 18px;
     font-weight: 300;
     line-height: 28px;
@@ -81,6 +97,14 @@ header h2 {
 
 .flex-row div {
     width: 50%;
+}
+
+.flex-row.full {
+    margin: 20px 0 0 0;
+}
+
+.flex-row.full div {
+    width: 100%;
 }
 
 .flex-row .img-container {
@@ -114,3 +138,71 @@ header h2 {
     padding: 0;
     text-align: justify;
 }
+
+.lux-container {
+    position: relative;
+    box-shadow: 0 0 30px -10px #650c2a;
+    background: repeating-linear-gradient(135deg, rgba(145, 145, 145, 0.02) 0px, rgba(145, 145, 145, 0.02) 39px,rgba(140, 140, 140, 0.02) 39px, rgba(140, 140, 140, 0.02) 57px,rgba(9, 9, 9, 0.02) 57px, rgba(9, 9, 9, 0.02) 91px,rgba(217, 217, 217, 0.02) 91px, rgba(217, 217, 217, 0.02) 119px,rgba(45, 45, 45, 0.02) 119px, rgba(45, 45, 45, 0.02) 141px,rgba(227, 227, 227, 0.02) 141px, rgba(227, 227, 227, 0.02) 184px,rgba(236, 236, 236, 0.02) 184px, rgba(236, 236, 236, 0.02) 227px,rgba(124, 124, 124, 0.02) 227px, rgba(124, 124, 124, 0.02) 244px),repeating-linear-gradient(135deg, rgba(39, 39, 39, 0.02) 0px, rgba(39, 39, 39, 0.02) 23px,rgba(2, 2, 2, 0.02) 23px, rgba(2, 2, 2, 0.02) 55px,rgba(13, 13, 13, 0.02) 55px, rgba(13, 13, 13, 0.02) 71px,rgba(44, 44, 44, 0.02) 71px, rgba(44, 44, 44, 0.02) 98px,rgba(240, 240, 240, 0.02) 98px, rgba(240, 240, 240, 0.02) 134px,rgba(182, 182, 182, 0.02) 134px, rgba(182, 182, 182, 0.02) 159px,rgba(246, 246, 246, 0.02) 159px, rgba(246, 246, 246, 0.02) 174px,rgba(157, 157, 157, 0.02) 174px, rgba(157, 157, 157, 0.02) 190px),repeating-linear-gradient(135deg, rgba(145, 145, 145, 0.02) 0px, rgba(145, 145, 145, 0.02) 35px,rgba(217, 217, 217, 0.02) 35px, rgba(217, 217, 217, 0.02) 53px,rgba(199, 199, 199, 0.02) 53px, rgba(199, 199, 199, 0.02) 70px,rgba(196, 196, 196, 0.02) 70px, rgba(196, 196, 196, 0.02) 114px,rgba(137, 137, 137, 0.02) 114px, rgba(137, 137, 137, 0.02) 143px,rgba(249, 249, 249, 0.02) 143px, rgba(249, 249, 249, 0.02) 191px,rgba(247, 247, 247, 0.02) 191px, rgba(247, 247, 247, 0.02) 239px,rgba(38, 38, 38, 0.02) 239px, rgba(38, 38, 38, 0.02) 273px),linear-gradient(90deg, rgb(69, 69, 69),rgba(3, 3, 3, 0.32))
+}
+
+.lux-inner {
+    position: absolute;
+    top: 0;
+    background: #3d2643;
+    clip-path: circle(2.6% at calc(100% - 60px) 64px);
+    transition: all .5s ease-in-out;
+    cursor: pointer;
+    height: 100%;
+}
+
+.lux-inner:hover {
+    clip-path: circle(75%);
+    background: #3d2643;
+}
+
+.lux-inner:hover span {
+    color: rgba(255,255,255,0)
+}
+
+.lux-inner h1 {
+    color: white;
+}
+
+.lux-inner p {
+    color: white;
+}
+
+.lux-inner span {
+    float: right;
+    color: white;
+    font-weight: bold;
+    transition: color .5s;
+    position: relative;
+    margin: 40px 35px;
+}
+
+.lux-inner span i.material-icons {
+    font-size: 50px;
+    color: #e91e63;
+    transition: all .5s ease-in-out;
+}
+
+.lux-inner span i.material-icons:hover {
+    color: #3d2643;
+}
+
+.lux-container div.lux-text {
+    width: calc(100% - 2em);
+    padding: 1em;
+    color: #fff;
+}
+
+.lux-text a {
+    text-decoration: none;
+    color: #f9ab00;
+}
+
+.lux-text a:hover {
+    color: #e91e63;
+}
+
