@@ -1,0 +1,23 @@
+{
+  "name": "eecs4480",
+  "version": "1.0.0",
+  "description": "A research project for York University Computer Security",
+  "main": "chromeless.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saaniaki/eecs4480.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/saaniaki/eecs4480/issues"
+  },
+  "homepage": "https://github.com/saaniaki/eecs4480#readme",
+  "dependencies": {
+    "puppeteer": "^2.1.1",
+    "selenium-webdriver": "^4.0.0-alpha.5"
+  }
+}

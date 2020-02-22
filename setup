@@ -63,3 +63,8 @@ Now <domain_name>/cgi-bin/awstats.pl should be accessible
 
 sudo htpasswd -c /etc/apache2/htpasswd admin
 
+
+update from UI (config): sudo nano /etc/awstats/awstats.ec2-35-183-239-72.ca-central-1.compute.amazonaws.com.conf
+# set AllowToUpdateStatsFromBrowser to 1
+update from UI (permission): sudo setfacl -m "u:www-data:rx" /var/log/apache2/eecs_access.log 
+
