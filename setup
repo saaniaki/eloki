@@ -68,3 +68,5 @@ update from UI (config): sudo nano /etc/awstats/awstats.ec2-35-183-239-72.ca-cen
 # set AllowToUpdateStatsFromBrowser to 1
 update from UI (permission): sudo setfacl -m "u:www-data:rx" /var/log/apache2/eecs_access.log 
 
+
+check for access log: cat /var/log/apache2/eecs_access.log | grep "GET /p1.html"
