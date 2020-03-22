@@ -5,4 +5,4 @@ attacks. To make our analysis more realistic, we will be using free and readily 
 deployed for application layer testing and/or DDoS attacks.
 
 This wesite is live at the following link:
-http://ec2-35-183-239-72.ca-central-1.compute.amazonaws.com
+http://www.eloki.tk

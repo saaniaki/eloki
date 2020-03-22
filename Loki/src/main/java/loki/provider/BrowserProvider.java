@@ -1,4 +1,4 @@
-package eecs;
+package loki.provider;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 

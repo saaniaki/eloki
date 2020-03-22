@@ -1,6 +1,4 @@
-package eecs;
-
-import com.gargoylesoftware.htmlunit.BrowserVersion;
+package loki.provider;
 
 import java.io.BufferedReader;
 import java.io.File;

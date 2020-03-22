@@ -1,4 +1,4 @@
-package eecs;
+package loki.provider;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -20,9 +20,9 @@ public class PathProvider {
         File list = new File(Objects.requireNonNull(PATHS_FILE).getFile());
         try (FileReader reader = new FileReader(list);
              BufferedReader br = new BufferedReader(reader)) {
-            String keyword;
-            while ((keyword = br.readLine()) != null)
-                PATHS.add(keyword.replace(" ", "+"));
+            String path;
+            while ((path = br.readLine()) != null)
+                PATHS.add(path.replace(" ", "+"));
         } catch (Exception e) {
             e.printStackTrace();
         }

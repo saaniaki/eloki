@@ -1,8 +1,9 @@
-package eecs;
+package loki;
 
 import com.gargoylesoftware.htmlunit.ProxyConfig;
 import com.gargoylesoftware.htmlunit.SilentCssErrorHandler;
 import com.gargoylesoftware.htmlunit.WebClient;
+import loki.provider.BrowserProvider;
 import org.apache.commons.logging.LogFactory;
 
 import java.util.logging.Level;
