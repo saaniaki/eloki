@@ -3,6 +3,7 @@ package loki.provider;
 public class Config {
 
     private String target;
+    private String GAToken;
     private int threadsNumber;
     private int maxRequests;
     private short initMinDelay; // In Minutes
@@ -14,6 +15,7 @@ public class Config {
     // Defaults
     public Config() {
         this.target = "http://www.eloki.tk";
+        this.GAToken = "UA-157513426-1";
         this.threadsNumber = 50;
         this.maxRequests = 1000;
         this.initMinDelay = 1;
@@ -29,6 +31,14 @@ public class Config {
 
     public void setTarget(String target) {
         this.target = target;
+    }
+
+    public String getGAToken() {
+        return GAToken;
+    }
+
+    public void setGAToken(String GAToken) {
+        this.GAToken = GAToken;
     }
 
     public int getThreadsNumber() {

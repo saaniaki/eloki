@@ -106,11 +106,11 @@ public class Loki implements Runnable {
             request.setAdditionalHeader("Referer", referrer);
             HtmlPage page1 = webClient.getPage(request);
             // blocks till GA tag is fully initialized
-            page1.executeJavaScript("while(dataLayer[1][1] != 'UA-157513426-1') {}; var x = true; x;");
+            page1.executeJavaScript("while(dataLayer[1][1] != '" + this.getConfig().getGAToken() + "') {}; var x = true; x;");
             HtmlAnchor htmlAnchor = page1.getAnchorByHref(AnchorProvider.getRandomAnchor());
             this.safeSleep(this.config.getHaltDelay() * ONE_SECOND); // To make the GA confused about online users, 30 seconds
             HtmlPage page2 = htmlAnchor.click();
-            page2.executeJavaScript("while(dataLayer[1][1] != 'UA-157513426-1') {}; var x = true; x;");
+            page2.executeJavaScript("while(dataLayer[1][1] != '" + this.getConfig().getGAToken() + "') {}; var x = true; x;");
             webClient.close();
         } catch (Exception e) {
             System.out.println("Request didn't go through, trying again...");
