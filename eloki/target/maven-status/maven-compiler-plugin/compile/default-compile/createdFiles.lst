@@ -1,1 +1,8 @@
-eecs/Main.class
+loki/provider/KeywordProvider.class
+loki/provider/AnchorProvider.class
+loki/provider/Config.class
+loki/provider/BrowserProvider.class
+loki/CustomWebClient.class
+loki/Main.class
+loki/Loki.class
+loki/provider/PathProvider.class

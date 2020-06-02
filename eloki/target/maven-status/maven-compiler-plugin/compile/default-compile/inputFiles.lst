@@ -1,1 +1,8 @@
-/var/www/eecsdomain.com/HtmlUnit/src/main/java/eecs/Main.java
+/home/saaniaki/Documents/4480/eecs4480/eloki/src/main/java/loki/CustomWebClient.java
+/home/saaniaki/Documents/4480/eecs4480/eloki/src/main/java/loki/Main.java
+/home/saaniaki/Documents/4480/eecs4480/eloki/src/main/java/loki/provider/KeywordProvider.java
+/home/saaniaki/Documents/4480/eecs4480/eloki/src/main/java/loki/provider/Config.java
+/home/saaniaki/Documents/4480/eecs4480/eloki/src/main/java/loki/provider/AnchorProvider.java
+/home/saaniaki/Documents/4480/eecs4480/eloki/src/main/java/loki/provider/PathProvider.java
+/home/saaniaki/Documents/4480/eecs4480/eloki/src/main/java/loki/provider/BrowserProvider.java
+/home/saaniaki/Documents/4480/eecs4480/eloki/src/main/java/loki/Loki.java

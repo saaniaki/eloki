@@ -6,8 +6,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="HtmlUnit" />
+        <module name="eloki" />
         <module name="Loki" />
+        <module name="HtmlUnit" />
       </profile>
     </annotationProcessing>
   </component>
