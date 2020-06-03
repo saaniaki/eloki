@@ -177,7 +177,7 @@ $ mvn package               # Complies and makes a fat jar
 
 After seeing the **BUILD SUCCESS** you can find eLoki fat jar file in the `./eloki/tearget` folder. To run it, you can execute the following:
 ```bash
-$ java -jar eLoki-1.0-SNAPSHOT-jar-with-dependencies.jar
+$ java -jar eLoki-1.0-jar-with-dependencies.jar
 ```
 To make eLoki use Tor proxy, open the Tor browser and make sure that it is running the proxy on `127.0.0.1:9150`.
 

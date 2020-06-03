@@ -1,43 +1,47 @@
-package loki;
+package eloki;
 
-import com.gargoylesoftware.htmlunit.ProxyConfig;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.WebRequest;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import loki.provider.AnchorProvider;
-import loki.provider.Config;
-import loki.provider.KeywordProvider;
-import loki.provider.PathProvider;
+import eloki.provider.AnchorProvider;
+import eloki.provider.Config;
+import eloki.provider.KeywordProvider;
+import eloki.provider.PathProvider;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+import java.net.SocketException;
 import java.net.URL;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Loki implements Runnable {
+@Component
+@Scope("prototype")
+public class ELoki implements Runnable, ApplicationContextAware {
 
-    private static final int ONE_SECOND = 1000;
-    private static final int ONE_MINUTE = 60 * 1000;
+    int ONE_MINUTE = 60 * 1000;
 
     private Config config;
     private boolean initialized;
 
-    public Loki(Config config) {
+    private AnchorProvider anchorProvider;
+    private KeywordProvider keywordProvider;
+    private PathProvider pathProvider;
+
+    private ApplicationContext applicationContext;
+
+    public ELoki(Config config, AnchorProvider anchorProvider,
+                 KeywordProvider keywordProvider, PathProvider pathProvider) {
         this.config = config;
+        this.anchorProvider = anchorProvider;
+        this.keywordProvider = keywordProvider;
+        this.pathProvider = pathProvider;
         this.initialized = false;
-    }
-
-    public Config getConfig() {
-        return config;
-    }
-
-    public void setConfig(Config config) {
-        this.config = config;
-    }
-
-    public boolean isInitialized() {
-        return initialized;
     }
 
     public void setInitialized(boolean initialized) {
@@ -87,35 +91,17 @@ public class Loki implements Runnable {
                         + "\tRest for: ~" + restFormat + " minuets");
             }
 
-            this.safeSleep(rest);
+//            this.safeSleep(rest);
         }
     }
 
     private synchronized void browse() {
-        ProxyConfig proxyConfig = null;
-        try {
-            proxyConfig = new ProxyConfig("127.0.0.1", 9150, true);
-        } catch (Exception e) {
-            System.out.println("Could not use Tor, falling back to no-proxy.");
-        }
-
-        try {
-            final WebClient webClient = new CustomWebClient(proxyConfig);
-            String referrer = "https://www.google.com/search?q=" + KeywordProvider.getRandomKeyword();
-            WebRequest request = new WebRequest(new URL(this.config.getTarget() + PathProvider.getRandomPath()));
-            request.setAdditionalHeader("Referer", referrer);
-            HtmlPage page1 = webClient.getPage(request);
-            // blocks till GA tag is fully initialized
-            page1.executeJavaScript("while(dataLayer[1][1] != '" + this.getConfig().getGAToken() + "') {}; var x = true; x;");
-            HtmlAnchor htmlAnchor = page1.getAnchorByHref(AnchorProvider.getRandomAnchor());
-            this.safeSleep(this.config.getHaltDelay() * ONE_SECOND); // To make the GA confused about online users, 30 seconds
-            HtmlPage page2 = htmlAnchor.click();
-            page2.executeJavaScript("while(dataLayer[1][1] != '" + this.getConfig().getGAToken() + "') {}; var x = true; x;");
-            webClient.close();
-        } catch (Exception e) {
-            System.out.println("Request didn't go through, trying again...");
-            this.browse();
-        }
+        final Browser browser = applicationContext.getBean(Browser.class);
+        browser.browse();
     }
 
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
 }

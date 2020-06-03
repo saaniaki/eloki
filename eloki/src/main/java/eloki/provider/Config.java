@@ -1,5 +1,8 @@
-package loki.provider;
+package eloki.provider;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Config {
 
     private String target;
@@ -11,18 +14,20 @@ public class Config {
     private short minDelay; // In Minutes
     private short maxDelay; // In Minutes
     private short haltDelay; // In Seconds
+    private boolean useTor;
 
     // Defaults
     public Config() {
         this.target = "http://www.eloki.tk";
         this.GAToken = "UA-157513426-1";
-        this.threadsNumber = 50;
-        this.maxRequests = 1000;
-        this.initMinDelay = 1;
-        this.initMaxDelay = 3;
+        this.threadsNumber = 2;
+        this.maxRequests = 10;
+        this.initMinDelay = 0;
+        this.initMaxDelay = 1;
         this.minDelay = 5;
         this.maxDelay = 10;
         this.haltDelay = 30;
+        this.useTor = true;
     }
 
     public String getTarget() {
@@ -95,5 +100,13 @@ public class Config {
 
     public void setHaltDelay(short haltDelay) {
         this.haltDelay = haltDelay;
+    }
+
+    public boolean useTor() {
+        return useTor;
+    }
+
+    public void setUseTor(boolean useTor) {
+        this.useTor = useTor;
     }
 }
