@@ -27,7 +27,7 @@ public class Config {
         this.minDelay = 5;
         this.maxDelay = 10;
         this.haltDelay = 30;
-        this.useTor = true;
+        this.useTor = false;
     }
 
     public String getTarget() {
