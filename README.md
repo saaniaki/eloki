@@ -1,6 +1,6 @@
 # Malwareless Web Analytics Pollution (MWAP) Attack
 
-> This project has been created for my EECS 4480 Computer Security Project at York University. and it will be maintained and extended as an active research.
+> This project has been created for my EECS 4480 Computer Security Project at York University, and it will be maintained and extended as active research.
 
 In this project, we evaluate the overall feasibility and effectiveness of conducting successful MWAP
 attacks. To make our analysis more realistic, we used free and readily available tools traditionally

@@ -15,12 +15,7 @@
         if (!pos) {
             // console.log("Capturing will start as soon as you move the mouse.");
         } else {
-            ticks.push({
-                mx: pos.x,
-                my: pos.y,
-                sx: window.pageXOffset,
-                sy: window.pageYOffset
-            });
+            ticks.push(`${pos.x},${pos.y},${window.pageXOffset},${window.pageYOffset}`);
             // console.log("mouse: " + pos.x + ", " + pos.y + " | " + "scroll: " + window.pageXOffset + ", " + window.pageYOffset);
         }
     }
@@ -32,7 +27,12 @@
                 document.onmousemove = null;
                 document.onclick = null;
                 clearInterval(theInterval);
-                document.write(JSON.stringify(ticks));
+
+                var result = "";
+                for (let tick of ticks)
+                    result += tick + '<br>';
+                
+                document.write(result);
             } else {
                 console.log("START");
                 document.onmousemove = handleMouseMove;
@@ -45,6 +45,8 @@
             capturing = !capturing;
         }
     }
+    window.scrollTo(0, 0);
+    console.log("Capturing will start as soon as you move the mouse.");
 })();
 
 // http://chromedriver.storage.googleapis.com/index.html

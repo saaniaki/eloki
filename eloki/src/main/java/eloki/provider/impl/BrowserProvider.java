@@ -1,5 +1,7 @@
-package eloki.provider;
+package eloki.provider.impl;
 
+import eloki.provider.AsProvider;
+import eloki.provider.FromDiskProvider;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -1,5 +1,9 @@
 package eloki.provider;
 
+import eloki.provider.impl.PathProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.*;
 import java.net.URL;
 import java.util.Enumeration;
@@ -11,6 +15,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public abstract class FromDiskProvider<T> implements Provider<T> {
+    private static final Logger logger = LoggerFactory.getLogger(FromDiskProvider.class);
 
     private final File jarFile = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
     private final String path;
@@ -26,7 +31,7 @@ public abstract class FromDiskProvider<T> implements Provider<T> {
         try {
             this.registerValuesFromSingleDirectory();
         } catch (Exception e) {
-            System.out.println("Could not load " + this.path);
+            logger.error("Could not load " + this.path);
             e.printStackTrace();
         }
     }
@@ -38,7 +43,7 @@ public abstract class FromDiskProvider<T> implements Provider<T> {
     }
 
     protected void registerValuesFromSingleDirectory() throws Exception {
-        System.out.println("Registering " + this.path + "...");
+        logger.debug("Registering " + this.path + ".");
         if (this.jarFile.isFile()) {  // Running via the fat JAR file
             try (JarFile jar = new JarFile(this.jarFile)) {
                 final Enumeration<JarEntry> entries = jar.entries(); // Gives ALL entries in jar
@@ -59,7 +64,7 @@ public abstract class FromDiskProvider<T> implements Provider<T> {
             else
                 this.registerValuesFromFile(file);
         }
-        System.out.println("Registered " + this.elements.size() + " element(s) by loading " + this.path);
+        logger.info("Registered " + this.elements.size() + " element(s) by loading " + this.path);
     }
 
     protected void registerValuesFromFile(File singleFile) {
@@ -67,8 +72,7 @@ public abstract class FromDiskProvider<T> implements Provider<T> {
         try (FileReader reader = new FileReader(singleFile)) {
             this.registerValuesFromReader(reader, singleFile.getPath());
         } catch (Exception e) {
-            System.out.println("Could not read single file at " + singleFile.getPath());
-            e.printStackTrace();
+            logger.error("Could not read single file at " + singleFile.getPath(), e);
         }
     }
 
@@ -77,8 +81,7 @@ public abstract class FromDiskProvider<T> implements Provider<T> {
         try (Reader reader = new InputStreamReader(inputStream)) {
             this.registerValuesFromReader(reader, path);
         } catch (IOException e) {
-            System.out.println("Could not create Reader when trying to read " + path);
-            e.printStackTrace();
+            logger.error("Could not create Reader when trying to read " + path, e);
         }
     }
 
@@ -86,8 +89,7 @@ public abstract class FromDiskProvider<T> implements Provider<T> {
         try (BufferedReader bufferedReader = new BufferedReader(reader)) {
             this.convert(bufferedReader);
         } catch (Exception e) {
-            System.out.println("Could not inputStream at " + path);
-            e.printStackTrace();
+            logger.error("Could not inputStream at " + path, e);
         }
     }
 

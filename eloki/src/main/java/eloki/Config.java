@@ -1,34 +1,51 @@
-package eloki.provider;
+package eloki;
 
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
-@Component
+@Configuration
+@PropertySource("classpath:eloki.properties")
 public class Config {
 
+    @Value("${target}")
     private String target;
+
+    @Value("${GAToken}")
     private String GAToken;
+
+    @Value("${threadsNumber}")
     private int threadsNumber;
+
+    @Value("${maxRequests}")
     private int maxRequests;
+
+    @Value("${initMinDelay}")
     private short initMinDelay; // In Minutes
+
+    @Value("${initMaxDelay}")
     private short initMaxDelay; // In Minutes
+
+    @Value("${minDelay}")
     private short minDelay; // In Minutes
+
+    @Value("${maxDelay}")
     private short maxDelay; // In Minutes
+
+    @Value("${haltDelay}")
     private short haltDelay; // In Seconds
+
+    @Value("${useTor}")
     private boolean useTor;
 
-    // Defaults
-    public Config() {
-        this.target = "http://www.eloki.tk";
-        this.GAToken = "UA-157513426-1";
-        this.threadsNumber = 2;
-        this.maxRequests = 10;
-        this.initMinDelay = 0;
-        this.initMaxDelay = 1;
-        this.minDelay = 5;
-        this.maxDelay = 10;
-        this.haltDelay = 30;
-        this.useTor = false;
-    }
+    @Value("${geckoDriverPath}")
+    private String geckoDriverPath;
+
+    @Value("${chromeDriverPath}")
+    private String chromeDriverPath;
+
+
+    public Config() { }
 
     public String getTarget() {
         return target;
@@ -108,5 +125,21 @@ public class Config {
 
     public void setUseTor(boolean useTor) {
         this.useTor = useTor;
+    }
+
+    public String getGeckoDriverPath() {
+        return geckoDriverPath;
+    }
+
+    public void setGeckoDriverPath(String geckoDriverPath) {
+        this.geckoDriverPath = geckoDriverPath;
+    }
+
+    public String getChromeDriverPath() {
+        return chromeDriverPath;
+    }
+
+    public void setChromeDriverPath(String chromeDriverPath) {
+        this.chromeDriverPath = chromeDriverPath;
     }
 }

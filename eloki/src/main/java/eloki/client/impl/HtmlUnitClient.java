@@ -1,9 +1,16 @@
-package eloki;
+package eloki.client.impl;
 
 import com.gargoylesoftware.htmlunit.*;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import eloki.provider.*;
+import eloki.Config;
+import eloki.client.Client;
+import eloki.provider.impl.AnchorProvider;
+import eloki.provider.impl.BrowserProvider;
+import eloki.provider.impl.KeywordProvider;
+import eloki.provider.impl.PathProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.SocketException;
 import java.net.URL;
@@ -11,28 +18,30 @@ import java.util.logging.Level;
 
 //@Component
 //@Scope("prototype")
-public class HtmlUnitClient extends Browser {
+public class HtmlUnitClient extends Client {
 
-    private AnchorProvider anchorProvider;
-    private KeywordProvider keywordProvider;
-    private PathProvider pathProvider;
-    private BrowserProvider browserProvider;
-    private Config config;
+    private static final Logger logger = LoggerFactory.getLogger(HtmlUnitClient.class);
 
-    private WebClient webClient;
+    private final AnchorProvider anchorProvider;
+    private final KeywordProvider keywordProvider;
+    private final PathProvider pathProvider;
+    private final BrowserProvider browserProvider;
+    private final Config config;
+
+    private final WebClient webClient;
 
     public HtmlUnitClient(AnchorProvider anchorProvider, KeywordProvider keywordProvider,
                           PathProvider pathProvider, BrowserProvider browserProvider, Config config) {
-
-        this.webClient = new WebClient(new BrowserVersion.BrowserVersionBuilder(BrowserVersion.FIREFOX_68)
-                .setUserAgent(browserProvider.provideRandomElement())
-                .build());
 
         this.anchorProvider = anchorProvider;
         this.keywordProvider = keywordProvider;
         this.pathProvider = pathProvider;
         this.browserProvider = browserProvider;
         this.config = config;
+
+        this.webClient = new WebClient(new BrowserVersion.BrowserVersionBuilder(BrowserVersion.FIREFOX_68)
+                .setUserAgent(this.browserProvider.provideRandomElement())
+                .build());
 
         if (this.config.useTor())
             this.webClient.getOptions().setProxyConfig(new ProxyConfig("127.0.0.1", 9150, true));
@@ -88,13 +97,11 @@ public class HtmlUnitClient extends Browser {
             page2.executeJavaScript("while(dataLayer[1][1] != '" + this.config.getGAToken() + "') {}; var x = true; x;");
             this.webClient.close();
         } catch (SocketException socketException) {
-            System.out.println("WARN: Could not use Tor, either open Tor browser or set the program to not use it.");
+            logger.error("WARN: Could not use Tor, either open Tor browser or set the program to not use it.", socketException);
         } catch (Exception e) {
-            System.out.println("Request didn't go through, trying again...");
-//            e.printStackTrace();
+            logger.error("Request didn't go through, trying again...", e);
             this.browse();
         }
     }
-
 
 }

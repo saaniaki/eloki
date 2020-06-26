@@ -1,13 +1,19 @@
-package eloki.provider;
+package eloki.provider.model;
 
-public class MouseCoordination {
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.PointerInput;
+
+import java.time.Duration;
+
+public class MouseMovement implements MouseEvent {
 
     private short mouseX;
     private short mouseY;
     private float scrollX;
     private float scrollY;
 
-    public MouseCoordination(short mouseX, short mouseY, float scrollX, float scrollY) {
+    public MouseMovement(short mouseX, short mouseY, float scrollX, float scrollY) {
         this.mouseX = mouseX;
         this.mouseY = mouseY;
         this.scrollX = scrollX;
@@ -54,5 +60,24 @@ public class MouseCoordination {
                 ", scrollX=" + scrollX +
                 ", scrollY=" + scrollY +
                 '}';
+    }
+
+    @Override
+    public void executeJs(JavascriptExecutor javascriptExecutor) {
+        javascriptExecutor.executeScript("window.scrollTo("
+                + (this.getScrollX())
+                + ", "
+                + (this.getScrollY())
+                + ");");
+    }
+
+    @Override
+    public Actions buildActions(PointerInput pointerInput, Actions actions) {
+        return actions.tick(pointerInput.createPointerMove(
+                Duration.ofMillis(1),
+                PointerInput.Origin.viewport(),
+                this.getMouseX(),
+                this.getMouseY()
+        ));
     }
 }
