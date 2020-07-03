@@ -18,13 +18,13 @@ import java.util.logging.Level;
 
 @Component
 @Scope("prototype")
-public class FireFox extends SeleniumClient {
+public class Firefox extends SeleniumClient {
 
-    private static final Logger logger = LoggerFactory.getLogger(FireFox.class);
+    private static final Logger logger = LoggerFactory.getLogger(Firefox.class);
 
-    public FireFox(AnchorProvider anchorProvider, KeywordProvider keywordProvider, PathProvider pathProvider,
-                   BrowserProvider browserProvider, Config config, MouseRecordingProvider mouseRecordingProvider) {
-        super(anchorProvider, keywordProvider, pathProvider, browserProvider, config, mouseRecordingProvider);
+    public Firefox(PathProvider pathProvider, BrowserProvider browserProvider,
+                   Config config, MouseRecordingProvider mouseRecordingProvider) {
+        super(pathProvider, browserProvider, config, mouseRecordingProvider);
     }
 
     @Override

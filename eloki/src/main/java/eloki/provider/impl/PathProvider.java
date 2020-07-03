@@ -1,11 +1,16 @@
 package eloki.provider.impl;
 
-import eloki.provider.AsProvider;
+import eloki.provider.AsDiskProvider;
 import eloki.provider.FromDiskProvider;
 import org.springframework.stereotype.Service;
 
+/**
+ * Provides a random path under the main domain to distribute the
+ * requests evenly. All the available paths should be listed in
+ * `resources/paths`.
+ */
 @Service
-@AsProvider("paths")
+@AsDiskProvider("paths")
 public class PathProvider extends FromDiskProvider<String> {
 
     @Override

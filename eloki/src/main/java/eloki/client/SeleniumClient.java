@@ -12,12 +12,17 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+/**
+ * This class has been created as an abstract class to avoid duplication and ease of extension.
+ * `SeleniumClient` uses `org.openqa.selenium.WebDriver` via composition and implements `Client`
+ * interface. To mark a `Client` implementation to be used, it should be annotated with `@Component`
+ * and `@Scope("prototype")`. Only one inherited class of `Client` should have these annotation at
+ * a time or Spring DI would not be able to determine which bean is in use at runtime.
+ */
 public abstract class SeleniumClient extends Client {
 
     private static final Logger logger = LoggerFactory.getLogger(SeleniumClient.class);
 
-    protected AnchorProvider anchorProvider;
-    protected KeywordProvider keywordProvider;
     protected PathProvider pathProvider;
     protected BrowserProvider browserProvider;
     protected Config config;
@@ -25,11 +30,8 @@ public abstract class SeleniumClient extends Client {
 
     protected WebDriver driver;
 
-    public SeleniumClient(AnchorProvider anchorProvider, KeywordProvider keywordProvider,
-                          PathProvider pathProvider, BrowserProvider browserProvider, Config config,
-                          MouseRecordingProvider mouseRecordingProvider) {
-        this.anchorProvider = anchorProvider;
-        this.keywordProvider = keywordProvider;
+    public SeleniumClient(PathProvider pathProvider, BrowserProvider browserProvider,
+                          Config config, MouseRecordingProvider mouseRecordingProvider) {
         this.pathProvider = pathProvider;
         this.browserProvider = browserProvider;
         this.config = config;

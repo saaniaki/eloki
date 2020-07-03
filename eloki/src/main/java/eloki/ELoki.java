@@ -27,6 +27,7 @@ public class ELoki implements Runnable, ApplicationContextAware {
         this.config = config;
         this.initialized = false;
 
+        // Registering the path of the Selenium Web Drivers
         System.setProperty("webdriver.chrome.driver", this.config.getGeckoDriverPath());
         System.setProperty("webdriver.gecko.driver", this.config.getGeckoDriverPath());
     }
@@ -58,7 +59,11 @@ public class ELoki implements Runnable, ApplicationContextAware {
         this.applicationContext = applicationContext;
     }
 
-    // TODO needs cleanup
+    /**
+     * TODO needs cleanup
+     * This method is in charge of distributing the requests over time. The goals here
+     * is to make a long-term increasing pattern which fluctuates in short-term periods.
+     */
     @Override
     public void run() {
         while (!this.initialized)

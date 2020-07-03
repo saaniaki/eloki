@@ -1,6 +1,6 @@
 package eloki.provider.impl;
 
-import eloki.provider.AsProvider;
+import eloki.provider.AsDiskProvider;
 import eloki.provider.FromDiskProvider;
 import eloki.provider.model.MouseClickEvent;
 import eloki.provider.model.MouseEvent;
@@ -12,8 +12,12 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Only available in `SeleniumClient`. Provides a random previously recorded mouse
+ * movement to be replied on the targeted web page.
+ */
 @Service
-@AsProvider("mouseRecordings")
+@AsDiskProvider("mouseRecordings")
 public class MouseRecordingProvider extends FromDiskProvider<List<MouseEvent>> {
 
     private List<MouseEvent> recordingSlots;

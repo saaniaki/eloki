@@ -18,9 +18,9 @@ import java.util.logging.Level;
 
 //@Component
 //@Scope("prototype")
-public class HtmlUnitClient extends Client {
+public class HtmlUnit extends Client {
 
-    private static final Logger logger = LoggerFactory.getLogger(HtmlUnitClient.class);
+    private static final Logger logger = LoggerFactory.getLogger(HtmlUnit.class);
 
     private final AnchorProvider anchorProvider;
     private final KeywordProvider keywordProvider;
@@ -30,8 +30,8 @@ public class HtmlUnitClient extends Client {
 
     private final WebClient webClient;
 
-    public HtmlUnitClient(AnchorProvider anchorProvider, KeywordProvider keywordProvider,
-                          PathProvider pathProvider, BrowserProvider browserProvider, Config config) {
+    public HtmlUnit(AnchorProvider anchorProvider, KeywordProvider keywordProvider,
+                    PathProvider pathProvider, BrowserProvider browserProvider, Config config) {
 
         this.anchorProvider = anchorProvider;
         this.keywordProvider = keywordProvider;

@@ -25,9 +25,9 @@ public class Chrome extends SeleniumClient {
 
     private static final Logger logger = LoggerFactory.getLogger(Chrome.class);
 
-    public Chrome(AnchorProvider anchorProvider, KeywordProvider keywordProvider, PathProvider pathProvider,
-                  BrowserProvider browserProvider, Config config, MouseRecordingProvider mouseRecordingProvider) {
-        super(anchorProvider, keywordProvider, pathProvider, browserProvider, config, mouseRecordingProvider);
+    public Chrome(PathProvider pathProvider, BrowserProvider browserProvider,
+                  Config config, MouseRecordingProvider mouseRecordingProvider) {
+        super(pathProvider, browserProvider, config, mouseRecordingProvider);
     }
 
     @Override

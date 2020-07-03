@@ -48,5 +48,3 @@
     window.scrollTo(0, 0);
     console.log("Capturing will start as soon as you move the mouse.");
 })();
-
-// http://chromedriver.storage.googleapis.com/index.html

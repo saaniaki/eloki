@@ -14,6 +14,14 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+/**
+ * Providers can read values from disk, network or they can even calculate them.
+ * As of now, all providers read values from Disk and therefore, the abstract
+ * `FromDiskProvider<T>` class has been created which then can be extended for
+ * more specific use cases. Any clas that extends `FromDiskProvider<T>` must also
+ * be annotated with `@AsDiskProvider(String path)`.
+ * @param <T>
+ */
 public abstract class FromDiskProvider<T> implements Provider<T> {
     private static final Logger logger = LoggerFactory.getLogger(FromDiskProvider.class);
 
@@ -23,9 +31,9 @@ public abstract class FromDiskProvider<T> implements Provider<T> {
     protected final List<T> elements = new LinkedList<>();
 
     public FromDiskProvider() throws RuntimeException {
-        AsProvider annotation = this.getClass().getAnnotation(AsProvider.class);
+        AsDiskProvider annotation = this.getClass().getAnnotation(AsDiskProvider.class);
         if (annotation == null)
-            throw new RuntimeException("Make sure the provider as the 'AsProvider' annotation.");
+            throw new RuntimeException("Make sure the provider as the 'AsDiskProvider' annotation.");
         this.path = annotation.value();
         this.url = PathProvider.class.getClassLoader().getResource(this.path);
         try {

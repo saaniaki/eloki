@@ -4,6 +4,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
+/**
+ * Main configurations of the application.
+ * This Configuration class scans all values provided in
+ * the `eloki.properties` file and can be injected to all
+ * other Spring beans.
+ */
 @Configuration
 @PropertySource("classpath:eloki.properties")
 public class Config {
