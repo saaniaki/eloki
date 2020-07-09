@@ -26,16 +26,16 @@ public abstract class SeleniumClient extends Client {
     protected PathProvider pathProvider;
     protected BrowserProvider browserProvider;
     protected Config config;
-    protected MouseRecordingProvider mouseRecordingProvider;
+    protected MouseRecordingProvider mrProvider;
 
     protected WebDriver driver;
 
     public SeleniumClient(PathProvider pathProvider, BrowserProvider browserProvider,
-                          Config config, MouseRecordingProvider mouseRecordingProvider) {
+                          Config config, MouseRecordingProvider mrProvider) {
         this.pathProvider = pathProvider;
         this.browserProvider = browserProvider;
         this.config = config;
-        this.mouseRecordingProvider = mouseRecordingProvider;
+        this.mrProvider = mrProvider;
 
         this.driver = this.setUpWebDriver();
     }
@@ -59,7 +59,7 @@ public abstract class SeleniumClient extends Client {
 
             Actions builder = new Actions(this.driver);
             PointerInput pointerInput = new PointerInput(PointerInput.Kind.MOUSE, "MyMouse");
-            List<MouseEvent> randomRecording = this.mouseRecordingProvider.provideRandomElement();
+            List<MouseEvent> randomRecording = this.mrProvider.provideRandomElement();
 
             for (MouseEvent mouseEvent : randomRecording) {
                 mouseEvent.executeJs(jsEngine);

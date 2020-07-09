@@ -7,10 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.net.URL;
 import java.util.Enumeration;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -20,15 +17,15 @@ import java.util.jar.JarFile;
  * `FromDiskProvider<T>` class has been created which then can be extended for
  * more specific use cases. Any clas that extends `FromDiskProvider<T>` must also
  * be annotated with `@AsDiskProvider(String path)`.
+ *
  * @param <T>
  */
-public abstract class FromDiskProvider<T> implements Provider<T> {
+public abstract class FromDiskProvider<T> extends Provider<T> {
     private static final Logger logger = LoggerFactory.getLogger(FromDiskProvider.class);
 
     private final File jarFile = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
     private final String path;
     private final URL url;
-    protected final List<T> elements = new LinkedList<>();
 
     public FromDiskProvider() throws RuntimeException {
         AsDiskProvider annotation = this.getClass().getAnnotation(AsDiskProvider.class);
@@ -42,12 +39,6 @@ public abstract class FromDiskProvider<T> implements Provider<T> {
             logger.error("Could not load " + this.path);
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public T provideRandomElement() {
-        int randomAgentIndex = ThreadLocalRandom.current().nextInt(0, this.elements.size());
-        return this.elements.get(randomAgentIndex);
     }
 
     protected void registerValuesFromSingleDirectory() throws Exception {
@@ -93,14 +84,6 @@ public abstract class FromDiskProvider<T> implements Provider<T> {
         }
     }
 
-    private void registerValuesFromReader(Reader reader, String path) {
-        try (BufferedReader bufferedReader = new BufferedReader(reader)) {
-            this.convert(bufferedReader);
-        } catch (Exception e) {
-            logger.error("Could not inputStream at " + path, e);
-        }
-    }
-
     protected void convert(BufferedReader bufferedReader) throws IOException {
         String line;
         while ((line = bufferedReader.readLine()) != null)
@@ -108,5 +91,13 @@ public abstract class FromDiskProvider<T> implements Provider<T> {
     }
 
     protected abstract T toElement(String line);
+
+    private void registerValuesFromReader(Reader reader, String path) {
+        try (BufferedReader bufferedReader = new BufferedReader(reader)) {
+            this.convert(bufferedReader);
+        } catch (Exception e) {
+            logger.error("Could not inputStream at " + path, e);
+        }
+    }
 
 }

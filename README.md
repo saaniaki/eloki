@@ -225,6 +225,8 @@ NOTE: After changing any values in the `resources`, eLoki just needs to be re-ru
 
 ## Architecture
 
+![GitHub Logo](/docs/eLoki_UML.jpg)
+
 To make eLoki extendable, two main abstractions have been put in place:
 
 1. Client
@@ -242,10 +244,13 @@ eLoki relies on a `Client` implementation to make the requests and fake the brow
 
 > You can take a look at HtmlUnit webste to get more information: https://htmlunit.sourceforge.io/
 
-Since the `HtmlUnit` does not expose an automated mouse movement API, the other two clients have been created. Both `Chrome` and `Firefox` are Selenium Web Drivers, and they need the respective web driver to be available on the system, which is running eLoki. The path of the driver should be provided in the `eloki.properties`. Since these two clients are using the same interface to browse the Internet, `SeleniumClient` has been created as an abstract class to avoid duplication and ease of extension. `SeleniumClient` uses `org.openqa.selenium.WebDriver` via composition and implements the `Client` interface.
+Since the `HtmlUnit` does not expose an automated mouse movement API, the other two clients have been created. Both `Chrome` and `Firefox` are Selenium Web Drivers, and they need the respective web driver to be available on the system, which is running eLoki. The path of the driver should be provided in the `eloki.properties`. 
 
-> http://chromedriver.storage.googleapis.com/index.html
-> https://github.com/mozilla/geckodriver/releases
+The Web Drivers can be downloadedfrom the links below:
+> - http://chromedriver.storage.googleapis.com/index.html
+> - https://github.com/mozilla/geckodriver/releases
+
+Since these two clients are using the same interface to browse the Internet, `SeleniumClient` has been created as an abstract class to avoid duplication and ease of extension. `SeleniumClient` uses `org.openqa.selenium.WebDriver` via composition and implements the `Client` interface.
 
 NOTE: To mark a `Client` implementation to be used, it should be annotated with `@Component` and `@Scope("prototype")`. Only one inherited class of `Client` should have these annotations at a time, or Spring DI would not be able to determine which bean is in use at runtime.
 

@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.List;
 /**
  * Main class acts as an initializer of all eLoki threads and the application context.
  */
-@Configuration
 @ComponentScan(basePackages = "eloki")
 public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
