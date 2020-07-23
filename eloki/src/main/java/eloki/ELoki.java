@@ -28,7 +28,7 @@ public class ELoki implements Runnable, ApplicationContextAware {
         this.initialized = false;
 
         // Registering the path of the Selenium Web Drivers
-        System.setProperty("webdriver.chrome.driver", this.config.getGeckoDriverPath());
+        System.setProperty("webdriver.chrome.driver", this.config.getChromeDriverPath());
         System.setProperty("webdriver.gecko.driver", this.config.getGeckoDriverPath());
     }
 

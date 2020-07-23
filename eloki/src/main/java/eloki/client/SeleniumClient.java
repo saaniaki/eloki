@@ -1,12 +1,17 @@
 package eloki.client;
 
 import eloki.Config;
-import eloki.provider.impl.*;
-import eloki.provider.model.MouseEvent;
+import eloki.provider.impl.BrowserProvider;
+import eloki.provider.impl.mouseRecording.MouseRecordingProvider;
+import eloki.provider.impl.path.PathProvider;
+import eloki.provider.impl.mouseRecording.MouseEvent;
+import eloki.provider.impl.path.PathInfo;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.PointerInput;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,6 +34,7 @@ public abstract class SeleniumClient extends Client {
     protected MouseRecordingProvider mrProvider;
 
     protected WebDriver driver;
+    private final WebDriverWait wait;
 
     public SeleniumClient(PathProvider pathProvider, BrowserProvider browserProvider,
                           Config config, MouseRecordingProvider mrProvider) {
@@ -38,6 +44,7 @@ public abstract class SeleniumClient extends Client {
         this.mrProvider = mrProvider;
 
         this.driver = this.setUpWebDriver();
+        this.wait = new WebDriverWait(this.driver, 180);
     }
 
     protected abstract WebDriver setUpWebDriver();
@@ -45,21 +52,27 @@ public abstract class SeleniumClient extends Client {
     protected void extendBrowsing() {
     }
 
+    protected void yieldJsStatement(String jsStatement, Object o) {
+        this.wait.until((ExpectedCondition<Boolean>) wd -> {
+            assert wd != null;
+            return ((JavascriptExecutor) wd).executeScript("return (" + jsStatement + ")").equals(o);
+        });
+    }
+
     @Override
     public void browse() {
         try {
+            PathInfo pathInfo = this.pathProvider.provideRandomElement();
             // Navigate to Url
-            this.driver.get(this.config.getTarget() + this.pathProvider.provideRandomElement());
-
-            //Creating the JavascriptExecutor interface object by Type casting
-            JavascriptExecutor jsEngine = (JavascriptExecutor) this.driver;
-            jsEngine.executeScript("while(dataLayer[1][1] != '" + this.config.getGAToken() + "') {}; var x = true; x;");
-
-            this.injectMouseLogger(jsEngine);
+            this.driver.get(this.config.getTarget() + pathInfo.getPath());
+            this.yieldJsStatement("document.readyState", "complete");
 
             Actions builder = new Actions(this.driver);
-            PointerInput pointerInput = new PointerInput(PointerInput.Kind.MOUSE, "MyMouse");
-            List<MouseEvent> randomRecording = this.mrProvider.provideRandomElement();
+            PointerInput pointerInput = new PointerInput(PointerInput.Kind.MOUSE, "BrowserMouse");
+            List<MouseEvent> randomRecording = this.mrProvider.provideRandomElement(pathInfo.getPath());
+
+            JavascriptExecutor jsEngine = (JavascriptExecutor) this.driver;
+            this.injectMouseLogger(jsEngine);
 
             for (MouseEvent mouseEvent : randomRecording) {
                 mouseEvent.executeJs(jsEngine);
@@ -68,12 +81,19 @@ public abstract class SeleniumClient extends Client {
             }
 
             this.extendBrowsing();
-            this.safeSleep(this.config.getHaltDelay() * ONE_SECOND);
+
+            if(pathInfo.isJsFinishStatementAvailable())
+                this.yieldJsStatement(pathInfo.getJsFinishStatement(), true);
+
+            if (pathInfo.getHaltDelay() == 0) // To make the GA confused about how long online users stay on this page
+                this.safeSleep(this.config.getHaltDelay() * ONE_SECOND);
+            else
+                this.safeSleep(pathInfo.getHaltDelay() * ONE_SECOND);
+
         } finally {
             logger.debug("Done.");
             driver.quit();
         }
-
     }
 
     private void injectMouseLogger(JavascriptExecutor jsEngine) {

@@ -19,6 +19,12 @@
             // console.log("mouse: " + pos.x + ", " + pos.y + " | " + "scroll: " + window.pageXOffset + ", " + window.pageYOffset);
         }
     }
+    function print_ticks() {
+        var result = "";
+        for (let tick of ticks)
+            result += tick + '<br>';
+        document.write(result);
+    }
     var theInterval;
     window.onkeydown = function(event) {
         if (event.ctrlKey) {
@@ -27,12 +33,7 @@
                 document.onmousemove = null;
                 document.onclick = null;
                 clearInterval(theInterval);
-
-                var result = "";
-                for (let tick of ticks)
-                    result += tick + '<br>';
-                
-                document.write(result);
+                print_ticks();
             } else {
                 console.log("START");
                 document.onmousemove = handleMouseMove;
@@ -40,6 +41,7 @@
                 document.onclick = (cEvent) => {
                     cEvent.preventDefault();
                     ticks.push("click");
+                    print_ticks();
                 }
             }
             capturing = !capturing;

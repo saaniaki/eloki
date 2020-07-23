@@ -1,7 +1,8 @@
 package eloki.provider.impl;
 
-import eloki.provider.AsDiskProvider;
-import eloki.provider.FromDiskProvider;
+import eloki.provider.AsHardDiskResourceReader;
+import eloki.provider.ElementHDRP;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 /**
@@ -11,8 +12,12 @@ import org.springframework.stereotype.Service;
  * click on any of the page elements.
  */
 @Service
-@AsDiskProvider("anchors")
-public class AnchorProvider extends FromDiskProvider<String> {
+@AsHardDiskResourceReader("providers.anchorsPath")
+public final class AnchorProvider extends ElementHDRP<String> {
+
+    public AnchorProvider(Environment environment) throws RuntimeException {
+        super(environment);
+    }
 
     @Override
     protected String toElement(String line) {

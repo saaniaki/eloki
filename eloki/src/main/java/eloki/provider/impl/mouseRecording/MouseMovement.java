@@ -1,4 +1,4 @@
-package eloki.provider.model;
+package eloki.provider.impl.mouseRecording;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.interactions.Actions;

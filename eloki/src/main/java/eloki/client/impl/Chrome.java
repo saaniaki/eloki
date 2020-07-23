@@ -3,6 +3,8 @@ package eloki.client.impl;
 import eloki.Config;
 import eloki.client.SeleniumClient;
 import eloki.provider.impl.*;
+import eloki.provider.impl.mouseRecording.MouseRecordingProvider;
+import eloki.provider.impl.path.PathProvider;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -13,8 +15,6 @@ import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.logging.Level;
@@ -35,7 +35,7 @@ public class Chrome extends SeleniumClient {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless"); // "--auto-open-devtools-for-tabs"
         options.addArguments("--window-size=1920,1200");
-        options.addArguments("--user-agent=" + this.browserProvider.provideRandomElement());
+//        options.addArguments("--user-agent=" + this.browserProvider.provideRandomElement()); TODO
 
         if (this.config.useTor())
             options.addArguments("--proxy-server=socks5://127.0.0.1:9150");

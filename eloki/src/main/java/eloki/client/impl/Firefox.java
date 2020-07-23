@@ -3,6 +3,8 @@ package eloki.client.impl;
 import eloki.Config;
 import eloki.client.SeleniumClient;
 import eloki.provider.impl.*;
+import eloki.provider.impl.mouseRecording.MouseRecordingProvider;
+import eloki.provider.impl.path.PathProvider;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -30,10 +32,10 @@ public class Firefox extends SeleniumClient {
     @Override
     protected WebDriver setUpWebDriver() {
         FirefoxOptions options = new FirefoxOptions();
-        options.addArguments("--headless"); // "--auto-open-devtools-for-tabs"
+        options.addArguments("--headless");
         options.addArguments("--width=1920");
         options.addArguments("--height=1200");
-        options.addPreference("general.useragent.override", this.browserProvider.provideRandomElement());
+//        options.addPreference("general.useragent.override", this.browserProvider.provideRandomElement()); TODO
 
         if (this.config.useTor()) {
             options.addPreference("network.proxy.socks", "127.0.0.1");

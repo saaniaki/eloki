@@ -1,4 +1,4 @@
-package eloki.provider.model;
+package eloki.provider.impl.mouseRecording;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.interactions.Actions;
@@ -13,6 +13,8 @@ public class MouseClickEvent implements MouseEvent {
 
     @Override
     public Actions buildActions(PointerInput pointerInput, Actions actions) {
-        return actions.click();
+        actions.tick(pointerInput.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+        actions.tick(pointerInput.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+        return actions;
     }
 }

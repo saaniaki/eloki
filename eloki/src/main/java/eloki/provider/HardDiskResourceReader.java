@@ -1,8 +1,9 @@
 package eloki.provider;
 
-import eloki.provider.impl.PathProvider;
+import eloki.provider.impl.path.PathProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.env.Environment;
 
 import java.io.*;
 import java.net.URL;
@@ -14,25 +15,32 @@ import java.util.jar.JarFile;
 /**
  * Providers can read values from disk, network or they can even calculate them.
  * As of now, all providers read values from Disk and therefore, the abstract
- * `FromDiskProvider<T>` class has been created which then can be extended for
- * more specific use cases. Any clas that extends `FromDiskProvider<T>` must also
- * be annotated with `@AsDiskProvider(String path)`.
- *
- * @param <T>
+ * `HardDiskResourceReader` class has been created which then can be extended for
+ * more specific use cases. Any class that extends `HardDiskResourceReader` must also
+ * be annotated with `@AsHardDiskResourceReader(String path)`.
  */
-public abstract class FromDiskProvider<T> extends Provider<T> {
-    private static final Logger logger = LoggerFactory.getLogger(FromDiskProvider.class);
+public abstract class HardDiskResourceReader {
+    private static final Logger logger = LoggerFactory.getLogger(HardDiskResourceReader.class);
 
     private final File jarFile = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
     private final String path;
     private final URL url;
 
-    public FromDiskProvider() throws RuntimeException {
-        AsDiskProvider annotation = this.getClass().getAnnotation(AsDiskProvider.class);
+    public HardDiskResourceReader(Environment environment) throws RuntimeException {
+        AsHardDiskResourceReader annotation = this.getClass().getAnnotation(AsHardDiskResourceReader.class);
         if (annotation == null)
-            throw new RuntimeException("Make sure the provider as the 'AsDiskProvider' annotation.");
-        this.path = annotation.value();
+            throw new RuntimeException("Make sure the provider as the 'AsHardDiskResourceReader' annotation.");
+        this.path = environment.getProperty(annotation.value());
+        if (this.path == null)
+            throw new RuntimeException("Make sure " + annotation.value() + " property exists and corresponds to a valid file on resources.");
         this.url = PathProvider.class.getClassLoader().getResource(this.path);
+    }
+
+    protected abstract void convert(BufferedReader bufferedReader) throws Exception;
+
+    protected abstract int getNumberOfElements();
+
+    protected void safeRegister() {
         try {
             this.registerValuesFromSingleDirectory();
         } catch (Exception e) {
@@ -41,7 +49,7 @@ public abstract class FromDiskProvider<T> extends Provider<T> {
         }
     }
 
-    protected void registerValuesFromSingleDirectory() throws Exception {
+    private void registerValuesFromSingleDirectory() throws Exception {
         logger.debug("Registering " + this.path + ".");
         if (this.jarFile.isFile()) {  // Running via the fat JAR file
             try (JarFile jar = new JarFile(this.jarFile)) {
@@ -50,7 +58,7 @@ public abstract class FromDiskProvider<T> extends Provider<T> {
                     final String name = entries.nextElement().getName();
                     if (!name.startsWith(this.path + "/") && !name.equals(this.path) || name.equals(this.path + "/"))
                         continue;
-                    InputStream resourceAsStream = FromDiskProvider.class.getClassLoader().getResourceAsStream(name);
+                    InputStream resourceAsStream = HardDiskResourceReader.class.getClassLoader().getResourceAsStream(name);
                     this.registerValuesFromInputStream(resourceAsStream, name);
                 }
             }
@@ -63,10 +71,10 @@ public abstract class FromDiskProvider<T> extends Provider<T> {
             else
                 this.registerValuesFromFile(file);
         }
-        logger.info("Registered " + this.elements.size() + " element(s) by loading " + this.path);
+        logger.info("Registered " + this.getNumberOfElements() + " element(s) by loading " + this.path);
     }
 
-    protected void registerValuesFromFile(File singleFile) {
+    private void registerValuesFromFile(File singleFile) {
         if (singleFile == null) return;
         try (FileReader reader = new FileReader(singleFile)) {
             this.registerValuesFromReader(reader, singleFile.getPath());
@@ -75,7 +83,7 @@ public abstract class FromDiskProvider<T> extends Provider<T> {
         }
     }
 
-    protected void registerValuesFromInputStream(InputStream inputStream, String path) {
+    private void registerValuesFromInputStream(InputStream inputStream, String path) {
         if (inputStream == null) return;
         try (Reader reader = new InputStreamReader(inputStream)) {
             this.registerValuesFromReader(reader, path);
@@ -83,14 +91,6 @@ public abstract class FromDiskProvider<T> extends Provider<T> {
             logger.error("Could not create Reader when trying to read " + path, e);
         }
     }
-
-    protected void convert(BufferedReader bufferedReader) throws IOException {
-        String line;
-        while ((line = bufferedReader.readLine()) != null)
-            this.elements.add(this.toElement(line));
-    }
-
-    protected abstract T toElement(String line);
 
     private void registerValuesFromReader(Reader reader, String path) {
         try (BufferedReader bufferedReader = new BufferedReader(reader)) {

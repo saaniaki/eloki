@@ -15,6 +15,6 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface AsDiskProvider {
-    String value();
+public @interface AsHardDiskResourceReader {
+    String value(); // property key
 }

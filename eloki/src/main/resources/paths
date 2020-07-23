@@ -1,3 +1,5 @@
-/p1.html
-/p2.html
-/p3.html
+/one.php
+/two.php::10
+/three.php::10
+/four.php::20::window.location.href.split('/')[3] === 'four.php' && document.readyState === 'complete'
+/five.php::30::window.location.href.split('/')[3] === 'five.php' && document.readyState === 'complete'

@@ -1,7 +1,8 @@
 package eloki.provider.impl;
 
-import eloki.provider.AsDiskProvider;
-import eloki.provider.FromDiskProvider;
+import eloki.provider.AsHardDiskResourceReader;
+import eloki.provider.ElementHDRP;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,8 +13,12 @@ import org.springframework.stereotype.Service;
  * `resources/anchors`.
  */
 @Service
-@AsDiskProvider("keywords")
-public class KeywordProvider extends FromDiskProvider<String> {
+@AsHardDiskResourceReader("providers.keywordsPath")
+public final class KeywordProvider extends ElementHDRP<String> {
+
+    public KeywordProvider(Environment environment) throws RuntimeException {
+        super(environment);
+    }
 
     @Override
     protected String toElement(String line) {

@@ -8,7 +8,7 @@ import eloki.client.Client;
 import eloki.provider.impl.AnchorProvider;
 import eloki.provider.impl.BrowserProvider;
 import eloki.provider.impl.KeywordProvider;
-import eloki.provider.impl.PathProvider;
+import eloki.provider.impl.path.PathProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -86,7 +86,7 @@ public class HtmlUnit extends Client {
     public void browse() {
         try {
             String referrer = "https://www.google.com/search?q=" + this.keywordProvider.provideRandomElement();
-            WebRequest request = new WebRequest(new URL(this.config.getTarget() + this.pathProvider.provideRandomElement()));
+            WebRequest request = new WebRequest(new URL(this.config.getTarget() + this.pathProvider.provideRandomElement().getPath()));
             request.setAdditionalHeader("Referer", referrer);
             HtmlPage page1 = this.webClient.getPage(request);
             // blocks till GA tag is fully initialized

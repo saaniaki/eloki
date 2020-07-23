@@ -14,42 +14,41 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource("classpath:eloki.properties")
 public class Config {
 
-    @Value("${target}")
+    @Value("${target:http://www.eloki.tk}")
     private String target;
 
-    @Value("${GAToken}")
+    @Value("${GAToken:UA-171069833-1}")
     private String GAToken;
 
-    @Value("${threadsNumber}")
+    @Value("${threadsNumber:50}")
     private int threadsNumber;
 
-    @Value("${maxRequests}")
+    @Value("${maxRequests:1000}")
     private int maxRequests;
 
-    @Value("${initMinDelay}")
+    @Value("${initMinDelay:1}")
     private short initMinDelay; // In Minutes
 
-    @Value("${initMaxDelay}")
+    @Value("${initMaxDelay:3}")
     private short initMaxDelay; // In Minutes
 
-    @Value("${minDelay}")
+    @Value("${minDelay:5}")
     private short minDelay; // In Minutes
 
-    @Value("${maxDelay}")
+    @Value("${maxDelay:10}")
     private short maxDelay; // In Minutes
 
-    @Value("${haltDelay}")
-    private short haltDelay; // In Seconds
+    @Value("${haltDelay:0}")
+    private short haltDelay; // In Seconds (global)
 
-    @Value("${useTor}")
+    @Value("${useTor:false}")
     private boolean useTor;
 
-    @Value("${geckoDriverPath}")
+    @Value("${geckoDriverPath:}")
     private String geckoDriverPath;
 
-    @Value("${chromeDriverPath}")
+    @Value("${chromeDriverPath:}")
     private String chromeDriverPath;
-
 
     public Config() { }
 

@@ -1,7 +1,8 @@
 package eloki.provider.impl;
 
-import eloki.provider.AsDiskProvider;
-import eloki.provider.FromDiskProvider;
+import eloki.provider.AsHardDiskResourceReader;
+import eloki.provider.ElementHDRP;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 /**
@@ -10,8 +11,12 @@ import org.springframework.stereotype.Service;
  * 9448 agents listed.
  */
 @Service
-@AsDiskProvider("agents")
-public class BrowserProvider extends FromDiskProvider<String> {
+@AsHardDiskResourceReader("providers.agentsPath")
+public final class BrowserProvider extends ElementHDRP<String> {
+
+    public BrowserProvider(Environment environment) throws RuntimeException {
+        super(environment);
+    }
 
     @Override
     protected String toElement(String line) {
