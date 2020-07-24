@@ -6,12 +6,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Any clas that extends `FromDiskProvider<T>` must also be annotated with
- * `@AsDiskProvider(String path)` and provide the path of the file or folder
- * which contains all valid values relative to the `resources` folder. `path`
- * can be a text file or a folder which contains other text files or folders.
- * In case of a folder path, `FromDiskProvider<T>` childs would read values
- * recursively.
+ * All subclasses of `HardDiskResourceReader` must be annotated with this
+ * annotation and provide the property key which will be used to indicate
+ * the path of the file or folder which contains all valid values relative
+ * to the `resources` folder. This path can point to a text file or a folder
+ * which contains other text files or folders. In the case of a folder path,
+ * `HardDiskResourceReader` children would read values recursively.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

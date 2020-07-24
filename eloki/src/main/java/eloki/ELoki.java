@@ -13,7 +13,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @Component
 @Scope("prototype")
-public class ELoki implements Runnable, ApplicationContextAware {
+public final class ELoki implements Runnable, ApplicationContextAware {
     private static final Logger logger = LoggerFactory.getLogger(ELoki.class);
 
     int ONE_MINUTE = 60 * 1000;

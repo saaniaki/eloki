@@ -7,8 +7,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Provides a random path under the main domain to distribute the
- * requests evenly. All the available paths should be listed in
- * `resources/paths`.
+ * requests evenly.
  */
 @Service
 @AsHardDiskResourceReader("providers.pathsPath")
@@ -19,7 +18,7 @@ public final class PathProvider extends ElementHDRP<PathInfo> {
     }
 
     @Override
-    protected PathInfo toElement(String line) throws Exception {
+    public PathInfo toElement(String line) throws Exception {
         String[] parts = line.split("::", 3);
         if (parts.length == 1)
             return new PathInfo(parts[0]);

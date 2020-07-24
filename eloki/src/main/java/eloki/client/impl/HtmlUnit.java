@@ -18,7 +18,7 @@ import java.util.logging.Level;
 
 //@Component
 //@Scope("prototype")
-public class HtmlUnit extends Client {
+public final class HtmlUnit extends Client {
 
     private static final Logger logger = LoggerFactory.getLogger(HtmlUnit.class);
 

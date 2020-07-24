@@ -7,11 +7,17 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * The purpose of this class is to provide a random value out of a big pool of valid values read and loaded
+ * from the hard disk.
+ *
+ * @param <T>
+ */
 public abstract class ElementHDRP<T> extends HardDiskResourceReader implements ElementRandomProvider<T> {
 
     protected final List<T> elements = new LinkedList<>();
 
-    protected abstract T toElement(String line) throws Exception;
+    public abstract T toElement(String line) throws Exception;
 
     public ElementHDRP(Environment environment) throws RuntimeException {
         super(environment);
@@ -26,7 +32,7 @@ public abstract class ElementHDRP<T> extends HardDiskResourceReader implements E
     }
 
     @Override
-    protected int getNumberOfElements() {
+    public int getNumberOfElements() {
         return this.elements.size();
     }
 

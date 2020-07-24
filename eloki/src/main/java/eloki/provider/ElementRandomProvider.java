@@ -1,9 +1,10 @@
 package eloki.provider;
 
 /**
- * `Provider<T>` is an interface which provides random elements of type `T`.
- * All providers should be Spring Singleton beans in the service layer that provide
- * inputs to the clients in a random fashion.
+ * A generic interface that provides random elements of type `T`.
+ * All providers of this type read and load the valid values into
+ * the memory and then provide them when the `provideRandomElement`
+ * method has been called.
  *
  * @param <T>
  */

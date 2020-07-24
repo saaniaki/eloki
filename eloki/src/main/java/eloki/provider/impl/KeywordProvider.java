@@ -9,8 +9,7 @@ import org.springframework.stereotype.Service;
  * Only available in `HtmlUnit`. Provides a random word to be put
  * in the `referee` HTTP header of the request. This feature is not
  * being supported by the `SeleniumClient` and is being prevented
- * due to the security concerns. The list of keywords is located at
- * `resources/anchors`.
+ * due to the security concerns.
  */
 @Service
 @AsHardDiskResourceReader("providers.keywordsPath")
@@ -21,7 +20,7 @@ public final class KeywordProvider extends ElementHDRP<String> {
     }
 
     @Override
-    protected String toElement(String line) {
+    public String toElement(String line) {
         return line;
     }
 

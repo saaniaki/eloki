@@ -31,7 +31,7 @@ public final class MouseRecordingProvider extends SelectiveCollectionHDRP<String
         return new ArrayList<>();
     }
 
-    protected MouseEvent toElement(String line) {
+    public MouseEvent toElement(String line) {
         if (line.equals("click"))
             return new MouseClickEvent();
         else {

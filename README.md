@@ -6,7 +6,7 @@ In this project, we evaluate the overall feasibility and effectiveness of conduc
 attacks. To make our analysis more realistic, we used free and readily available tools traditionally
 deployed for application layer testing and DDoS attacks.
 
-There are two victim websites up and running at http://www.eloki.tk and http://4080eloki.net
+There are two victims websites up and running at http://www.eloki.tk and http://4080eloki.net
 
 ```bash
 ./target        # The sample target website
@@ -74,7 +74,7 @@ The `/var/www/<example>/index.html` should be live now. Remove it and copy every
 
 > Good place to start: https://support.google.com/analytics/answer/1008080
 
-After setting up a google account and enabling Google Analytics, the guide will ask you to put the following code snippet on every page of your website. In the proposal files of this repository, <GAToken> is `UA-157513426-1`.
+After setting up a Google account and enabling Google Analytics, the guide will ask you to put the following code snippet on every page of your website. In the proposal files of this repository, <GAToken> is `UA-157513426-1`.
 
 ```html
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -93,7 +93,7 @@ Make sure you change the <GAToken> and put your target GAToken.
 
 > A great resource to start: https://www.linuxbabe.com/ubuntu/install-awstats-ubuntu-18-04-apache
 
-To install AWStatson your server, run the following and then modify the configuration file:
+To install AWStats on your server, run the following and then modify the configuration file:
 ```bash
 $ sudo apt install awstats libgeo-ip-perl libgeo-ipfree-perl
 $ sudo nano /etc/apache2/sites-available/<example>.conf
@@ -137,7 +137,7 @@ Finally, restrict the access to the AWStats dashboard by running the following:
 ```bash
 $ sudo htpasswd -c /etc/apache2/htpasswd admin
 ```
-and adding the following configueation before the `VirtualHost` closure tag:
+and adding the following configuration before the `VirtualHost` closure tag:
 ```
 <Directory "/usr/lib/cgi-bin/">
     AuthUserFile /etc/apache2/htpasswd
@@ -147,7 +147,7 @@ and adding the following configueation before the `VirtualHost` closure tag:
 </Directory>
 ```
 
-Restart the Apache webserver and AWStats should be up and running:
+Restart the Apache web server and AWStats should be up and running:
 ```bash
 $ sudo systemctl restart apache2
 ```
@@ -205,7 +205,7 @@ String geckoDriverPath;     // Path of the Gecko Web Driver on the system, defau
 String chromeDriverPath;    // Path of the Chrome Web Driver on the system, default: <empty>
 ```
 
-Before running eLoki, make sure that you have set the `target` and `GAToken` correctly.
+Before running eLoki, make sure you have set the `target` and `GAToken` correctly.
 
 After instantiating a `eLoki` instance, you can pass it to a `Thread` object and start the thread
 (you can take a look at the Main class as an example of the following):
@@ -218,17 +218,18 @@ Each `eLoki` object should be in one single thread.
 
 eLoki has been set to use `slf4j`, which binds with `log4j2` to collect and display the generated logs systematically. The settings of `log4j2` have been located under the `resources` folder in `log4j2.properties`.
 
-> Please take a look at https://logging.apache.org/log4j/2.x/manual/configuration.html for detailed documentation of `log4j2` configuration.
+> Please take a look at https://logging.apache.org/log4j/2.x/manual/configuration.html for the detailed documentation of `log4j2` configuration.
 
 NOTE: After changing any values in the `resources`, eLoki just needs to be re-run, and there is no need for recompiling the whole application.
 
 ## Architecture
 
-**Needs to be updated**
-
 ![eLoki UML](docs/eLoki_UML.jpg)
 
-**Needs description**
+- Blue: Interfaces
+- Orange: Abstract Classes
+- Yellow: Final classes
+- Purple: Packages outside this repository
 
 To make eLoki extendable, two main abstractions have been put in place:
 
@@ -237,7 +238,7 @@ To make eLoki extendable, two main abstractions have been put in place:
 
 #### Client
 
-eLoki relies on a `Client` implementation to make the requests and fake the browsing behaviour. `Client` interface exposes the `browse` method will be called by eLoki threads. There are currently three client implementations available:
+eLoki relies on a `Client` implementation to make the requests and fake the browsing behaviour. `Client` interface exposes the `browse` method will be called by eLoki threads. There are currently three implementations of `Client` available:
 
 1. HtmlUnit
 2. Chrome
@@ -249,7 +250,7 @@ eLoki relies on a `Client` implementation to make the requests and fake the brow
 
 Since the `HtmlUnit` does not expose an automated mouse movement API, the other two clients have been created. Both `Chrome` and `Firefox` are Selenium Web Drivers, and they need the respective web driver to be available on the system, which is running eLoki. The path of the driver should be provided in the `eloki.properties`. 
 
-The Web Drivers can be downloadedfrom the links below:
+The Web Drivers can be downloaded from the links below:
 > - http://chromedriver.storage.googleapis.com/index.html
 > - https://github.com/mozilla/geckodriver/releases
 
@@ -259,11 +260,11 @@ NOTE: To mark a `Client` implementation to be used, it should be annotated with 
 
 #### Provider
 
-`Provider` is a interface which indicates that any of its subclasses would provide some kind of value to the `Client` while making the fake requests. All providers implementations should be final classes Spring Singleton beans in the service layer that provide inputs to the clients in a random fashion. For example, one of the important providers is the `BrowserProvider`, which can be injected into a `Client` and provide a random browser agent name to be faked. 
+`Provider` is an interface which indicates that any of its subclasses would provide some kind of value to the `Client` while making the fake requests. All providers implementations should be final classes Spring Singleton beans in the service layer that provide inputs to the clients randomly. For example, one of the important providers is the `BrowserProvider`, which can be injected into a `Client` and provide a random browser agent name to be faked. 
 
-Providers can read values from disk, network, or they can even calculate them. As of now, all providers read values from disk, and therefore, the abstract `HardDiskResourceReader` class has been created, which then can be extended for more specific use cases. Any implementation of `Provider` that extends `HardDiskResourceReader` must also be annotated with `@AsHardDiskResourceReader(String propertyKey)` and provide the property key which will be used to indicate the path of the file or folder which contains all valid values relative to the `resources` folder. This path can point to a text file or a folder which contains other text files or folders. In the case of a folder path, `HardDiskResourceReader` children would read values recursively.
+Providers can read values from disk, network, or they can even calculate them. As of now, all providers read values from disk, and therefore, the abstract `HardDiskResourceReader` class has been created, which then can be extended for more specific use cases. Any subclass of `HardDiskResourceReader` must also be annotated with `@AsHardDiskResourceReader(String propertyKey)` and provide the property key which will be used to indicate the path of the file or folder which contains all valid values relative to the `resources` folder. This path can point to a text file, or a folder which contains other text files or folders. In the case of a folder path, `HardDiskResourceReader` children would read values recursively.
 
-> Ex. The `BrowserProvider` is a final implmentation of `Provider` and it has been annotated with `@AsHardDiskResourceReader("providers.agentsPath")`. This indicates that there is a line in the `eloki.properties` which has the key `providers.agentsPath` and its value is the path pointing to the file or foler that has all valid values for the browser agent names.
+> Ex. The `BrowserProvider` is a final implementation of `Provider` and it has been annotated with `@AsHardDiskResourceReader("providers.agentsPath")`. This indicates that there is a line in the `eloki.properties` which has the key `providers.agentsPath` and its value is the path pointing to the file or folder that has all valid values for the browser agent names.
 
 Providers can provide any primitive type or any model class. For example, `MouseRecordingProvider` provides a `List<MouseEvent>` which `SeleniumClient` knows how to work with.
 
@@ -271,11 +272,11 @@ There are two interfaces which extend `Provider`:
 
 1. `ElementRandomProvider<T>`
 
-`ElementRandomProvider<T>` is a generic class that provides random elements of type `T`. All providers of this type read and load the valid values into the memory and then provide them when the `provideRandomElement` method has been called.
+`ElementRandomProvider<T>` is a generic interface that provides random elements of type `T`. All providers of this type read and load the valid values into the memory and then provide them when the `provideRandomElement` method has been called.
 
 2. `SelectiveRandomProvider<K, T>`
 
-`SelectiveRandomProvider<K, T>` is a generic class that provides a random elements of type `T` from a group of elements that are grouped together with key `K`. All providers of this type read and load the valid values into the memory and then provide them when the `provideRandomElement(K key)` method has been called.
+`SelectiveRandomProvider<K, T>` is a generic interface that provides a random element of type `T` from a group of elements that are grouped together with key `K`. All providers of this type read and load the valid values into the memory and then provide them when the `provideRandomElement(K key)` method has been called.
 
 ### Hard Disk Random Providers (HDRP)
 
@@ -285,23 +286,23 @@ Combining the two different types of random providers with `HardDiskResourceRead
 
 The purpose of `ElementHDRP` implementations is to provide a random value out of a big pool of valid values read and loaded from the hard disk.
 
-Any subclass of `ElementHDRP<T>` automatically loads the files indicatted by the `@AsHardDiskResourceReader` and starts to read them line by line. While doing so, it will convert them to type `T` using the implementation of `abstract T toElement(String line)` method. All values read from all files indicatted by `@AsHardDiskResourceReader` would be stored in a `List<T>` and a random element will be provided by calling `T provideRandomElement()`.
+Any subclass of `ElementHDRP<T>` automatically loads the files indicated by the `@AsHardDiskResourceReader` and starts to read them line by line. While doing so, it will convert them to type `T` using the implementation of `abstract T toElement(String line)` method. All values read from all files indicated by `@AsHardDiskResourceReader` would be stored in a `List<T>` and a random element will be provided by calling `T provideRandomElement()`.
 
 2. `SelectiveCollectionHDRP<K, T extends Collection<M>, M>`
 
 The purpose of `SelectiveCollectionHDRP` implementations is to provide a random value out of a big buckets of valid values read and loaded from the hard disk. Each bucket is associated with a specific key of type `K` to make the `Client` able to pick values more thoughtfully.
 
-> Ex. The `MouseRecordingProvider` class provides a previously recorded mouse movement to the `Client` to replicate. `MouseRecordingProvider` is a `SelectiveCollectionHDRP` and this allows the `Client` to **randomly** pick a mouse movement recording based on the path which it is targeting at the moment. Therefore, the very fist line indicates on which paths of the victim website, the attacker weants to use the loaded mouse movement recording.
+> Ex. The `MouseRecordingProvider` class provides a previously recorded mouse movement to the `Client` to replicate. `MouseRecordingProvider` is a `SelectiveCollectionHDRP` and this allows the `Client` to **randomly** pick a mouse movement recording based on the path which it is targeting at the moment. Therefore, the very fist line indicates on which paths of the victim website, the attacker wants to use the loaded mouse movement recording.
 
-Any subclass of `SelectiveCollectionHDRP<K, T extends Collection<M>, M>` automatically loads the files indicatted by the `@AsHardDiskResourceReader`. After loading a file, `SelectiveCollectionHDRP` would first look for the very first line and looks for the `keys=` keyword.
+Any subclass of `SelectiveCollectionHDRP<K, T extends Collection<M>, M>` automatically loads the files indicated by the `@AsHardDiskResourceReader`. After loading a file, `SelectiveCollectionHDRP` would first look for the very first line and looks for the `keys=` keyword.
 
 > **IMPORTANT**: The very first line of files loaded by `SelectiveCollectionHDRP` must have the format of `keys=<key1>,<key2>` where the indicated keys are the bucket keys.
 
-*The very fist line indicates that based on which keys vlues, the attacker weants to use the loaded file.* The implementation of `abstract List<K> extractKeys(String lineValue)` is the logic of how keys should be extracted from the fist line.
+*The very fist line indicates that based on which keys values, the attacker wants to use the loaded file.* The implementation of `abstract List<K> extractKeys(String lineValue)` is the logic of how keys should be extracted from the fist line.
 
-Next, `SelectiveCollectionHDRP` starts to read the loaded file line by line and converts each line to type `M` using the implementation of `abstract M toElement(String line)` method. All values read from the currently loaded file be stored in an instance of type `T extends Collection<M>`. The implementation class should provide a `Collection`'s implementation instance (ex. `ArrayList`) which would be used to pack all the values of each file; `T instantiateElementCollection()` is in charge to instnatiate the collection object.
+Next, `SelectiveCollectionHDRP` starts to read the loaded file line by line and converts each line to type `M` using the implementation of `abstract M toElement(String line)` method. All values read from the currently loaded file be stored in an instance of type `T extends Collection<M>`. The implementation class should provide a `Collection`'s implementation instance (ex. `ArrayList`) which would be used to pack all the values of each file; `T instantiateElementCollection()` is in charge to instantiate the collection object.
 
-This means each file will be converted to a collention instance oif type `T`. Finally, all the created collection instances will be grouped together as a list `List<T>` and tagged with a key of type `K`. `SelectiveCollectionHDRP` internally uses a `Map<K, List<T>>` to map a key to a collection of values retrived from a single file.
+This means each file will be converted to a collection instance oif type `T`. Finally, all the created collection instances will be grouped together as a list `List<T>` and tagged with a key of type `K`. `SelectiveCollectionHDRP` internally uses a `Map<K, List<T>>` to map a key to a collection of values retrieved from a single file.
 
 Now by calling `T provideRandomElement(K key)`, a randomly selected collection of values of type `M` from the bucket `K` will be provided to the caller.
 
@@ -330,11 +331,11 @@ It provides a random path under the main domain to distribute the requests evenl
 - `<path>::<haltDelay>`
 - `<path>::<haltDelay>::<jsFinishStatement>`
 
-Note that `::` is being used as the seperator. If `haltDelay` has not been provided, the value of `haltDelay` indicated in the `eloki.properties` would be used. If there is no value available in the configuration as well, the default value of 0 will be used.
+Note that `::` is being used as the separator. If `haltDelay` has not been provided, the value of `haltDelay` indicated in the `eloki.properties` would be used. If there is no value available in the configuration as well, the default value of 0 will be used.
 
 - MouseRecordingProvider
 
-Only available in `SeleniumClient`. It provides a random previously recorded mouse movement to be replied on the targetted web page. To record a new mouse movement, open a new tab in your favourite browser and copy the [`mouseCapture.js`](nodecode/mouseCapture.js) script into the JS console. Now make sure that the size of the window is exactly set to `1920x1200`. Once you are ready, bring the focus on the browser window, hit the `ctrl` key and start browsing. Please note that the scrolling offset is also being recorded. Once you are done with browsing the page, you can hit the `ctrl` key again and copy the content of the page to a new file and locate it under `resources/mouseRecordings` folder.
+Only available in `SeleniumClient`. It provides a random previously recorded mouse movement to be replied on the targetted web page. To record a new mouse movement, open a new tab in your favourite browser and copy the [`mouseCapture.js`](nodecode/mouseCapture.js) script into the JS console. Now make sure the size of the window is exactly set to `1920x1200`. Once you are ready, bring the focus on the browser window, hit the `ctrl` key and start browsing. Please note that the scrolling offset is also being recorded. Once you are done with browsing the page, you can hit the `ctrl` key again and copy the content of the page to a new file and locate it under `resources/mouseRecordings` folder.
 
 > NOTE: Make sure to add the paths as the keys in the first line. Please take a look at [HDRP](#hard-disk-random-providers-hdrp) if you already have not.
 

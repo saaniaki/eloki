@@ -20,7 +20,7 @@ import java.util.logging.Level;
 
 @Component
 @Scope("prototype")
-public class Firefox extends SeleniumClient {
+public final class Firefox extends SeleniumClient {
 
     private static final Logger logger = LoggerFactory.getLogger(Firefox.class);
 

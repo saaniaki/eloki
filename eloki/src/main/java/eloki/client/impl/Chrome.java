@@ -21,7 +21,7 @@ import java.util.logging.Level;
 
 //@Component
 //@Scope("prototype")
-public class Chrome extends SeleniumClient {
+public final class Chrome extends SeleniumClient {
 
     private static final Logger logger = LoggerFactory.getLogger(Chrome.class);
 

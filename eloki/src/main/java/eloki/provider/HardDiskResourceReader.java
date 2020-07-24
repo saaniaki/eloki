@@ -13,11 +13,10 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 /**
- * Providers can read values from disk, network or they can even calculate them.
- * As of now, all providers read values from Disk and therefore, the abstract
- * `HardDiskResourceReader` class has been created which then can be extended for
- * more specific use cases. Any class that extends `HardDiskResourceReader` must also
- * be annotated with `@AsHardDiskResourceReader(String path)`.
+ * Providers can read values from disk, network, or they can even calculate them.
+ * As of now, all providers read values from disk, and therefore, this abstract
+ * class has been created, which then can be extended for more specific use cases.
+ * All subclasses must also be annotated with `@AsHardDiskResourceReader`.
  */
 public abstract class HardDiskResourceReader {
     private static final Logger logger = LoggerFactory.getLogger(HardDiskResourceReader.class);
@@ -38,7 +37,7 @@ public abstract class HardDiskResourceReader {
 
     protected abstract void convert(BufferedReader bufferedReader) throws Exception;
 
-    protected abstract int getNumberOfElements();
+    public abstract int getNumberOfElements();
 
     protected void safeRegister() {
         try {

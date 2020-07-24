@@ -7,6 +7,14 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * The purpose of this class is to provide a random value out of a big buckets of valid values read and loaded from the hard disk. Each bucket is
+ * associated with a specific key of type `K` to make the `Client` able to pick values more thoughtfully.
+ *
+ * @param <K>
+ * @param <T>
+ * @param <M>
+ */
 public abstract class SelectiveCollectionHDRP<K, T extends Collection<M>, M> extends HardDiskResourceReader implements SelectiveRandomProvider<K, T> {
 
     private final Map<K, List<T>> map = new HashMap<>();
@@ -15,7 +23,7 @@ public abstract class SelectiveCollectionHDRP<K, T extends Collection<M>, M> ext
 
     protected abstract T instantiateElementCollection();
 
-    protected abstract M toElement(String line) throws Exception;
+    public abstract M toElement(String line) throws Exception;
 
     public SelectiveCollectionHDRP(Environment environment) throws RuntimeException {
         super(environment);
@@ -43,7 +51,7 @@ public abstract class SelectiveCollectionHDRP<K, T extends Collection<M>, M> ext
     }
 
     @Override
-    protected int getNumberOfElements() {
+    public int getNumberOfElements() {
         return this.map.size();
     }
 
