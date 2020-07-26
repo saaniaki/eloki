@@ -1,10 +1,25 @@
 # eLoki: MWAP Attack Tool
 
-eLoki is a Malwareless Web Analytics Pollution (MWAP) Attack tool which has been crafted for my EECS 4480 Computer Security Project at York University. It will be maintained and extended as active research.
+eLoki is a Malwareless Web Analytics Pollution (MWAP) Attack tool crafted as a Computer Security Project at York University. It will be maintained and extended as active research.
 
-In this project, we evaluate the overall feasibility and effectiveness of conducting successful MWAP
-attacks. To make our analysis more realistic, we used free and readily available tools traditionally
-deployed for application layer testing and DDoS attacks.
+## Introduction
+
+Web analytical tools are almost as old as the World Wide Web itself, and they have become an integral part of the online world, Web analytics is a crucial part of the overall data which marketing teams base their decisions on.
+The ultimate goal of an attacker is to harm the overall performance of a firm or business and pollute the Web analytics data is one of the simplest ways to achieve this goal.
+
+There are two approaches to manipulate the analytical data:
+* Malware-based
+* **Malwareless-based**
+
+Malwareless Web Analytics Pollution (MWAP) attacks are more efficient and easier to execute.
+[Professor N. Vlajic](http://www.cse.yorku.ca/~vlajic/) has shown the superiority of Web Analytic engines that utilize JavaScript and the potential of abusing some smarter tools.
+Traditionally, hackers did have to resort to using malware and creating botnets. This previously analyzed approach has its advantages, but the attacker has to wait for the Malwareless-botnets and Puppet-nets to make the fake requests.
+
+**In this project, we have analyzed and developed a different approach where the attacker is in full control of when, where and how the traffic is being generated.**
+
+
+
+We have evaluated the overall feasibility and effectiveness of conducting successful MWAP attacks where the attacker can generate a large number of requests from one single machine, which he is in full control of. To make our analysis more realistic, we used free and readily available tools traditionally deployed for application layer testing and DDoS attacks.
 
 There are two victims websites up and running at http://www.eloki.tk and http://4080eloki.net
 
