@@ -2,10 +2,10 @@ package eloki.client;
 
 import eloki.Config;
 import eloki.provider.impl.BrowserProvider;
-import eloki.provider.impl.mouseRecording.MouseRecordingProvider;
-import eloki.provider.impl.path.PathProvider;
 import eloki.provider.impl.mouseRecording.MouseEvent;
+import eloki.provider.impl.mouseRecording.MouseRecordingProvider;
 import eloki.provider.impl.path.PathInfo;
+import eloki.provider.impl.path.PathProvider;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -71,18 +71,17 @@ public abstract class SeleniumClient extends Client {
             PointerInput pointerInput = new PointerInput(PointerInput.Kind.MOUSE, "BrowserMouse");
             List<MouseEvent> randomRecording = this.mrProvider.provideRandomElement(pathInfo.getPath());
 
-            JavascriptExecutor jsEngine = (JavascriptExecutor) this.driver;
-            this.injectMouseLogger(jsEngine);
+            this.injectMouseLogger((JavascriptExecutor) this.driver);
 
             for (MouseEvent mouseEvent : randomRecording) {
-                mouseEvent.executeJs(jsEngine);
+                mouseEvent.executeJs(this.driver);
                 mouseEvent.buildActions(pointerInput, builder);
                 builder.perform();
             }
 
             this.extendBrowsing();
 
-            if(pathInfo.isJsFinishStatementAvailable())
+            if (pathInfo.isJsFinishStatementAvailable())
                 this.yieldJsStatement(pathInfo.getJsFinishStatement(), true);
 
             if (pathInfo.getHaltDelay() == 0) // To make the GA confused about how long online users stay on this page

@@ -216,6 +216,8 @@ short minDelay;             // Minimum delay in minutes, default: 5
 short maxDelay;             // Maximum delay in minutes, default: 10
 short haltDelay;            // Halt delay in seconds, default: 0
 boolean useTor;             // Indicates either forcing eLoki to use Tor proxy or not, default: true
+short windowWidth;          // The browswer window width, default: 1920
+short windowHeight;         // The browswer window height, default: 1200
 String geckoDriverPath;     // Path of the Gecko Web Driver on the system, default: <empty>
 String chromeDriverPath;    // Path of the Chrome Web Driver on the system, default: <empty>
 ```
@@ -350,7 +352,28 @@ Note that `::` is being used as the separator. If `haltDelay` has not been provi
 
 - MouseRecordingProvider
 
-Only available in `SeleniumClient`. It provides a random previously recorded mouse movement to be replied on the targetted web page. To record a new mouse movement, open a new tab in your favourite browser and copy the [`mouseCapture.js`](nodecode/mouseCapture.js) script into the JS console. Now make sure the size of the window is exactly set to `1920x1200`. Once you are ready, bring the focus on the browser window, hit the `ctrl` key and start browsing. Please note that the scrolling offset is also being recorded. Once you are done with browsing the page, you can hit the `ctrl` key again and copy the content of the page to a new file and locate it under `resources/mouseRecordings` folder.
+Only available in `SeleniumClient`. It provides a random previously recorded mouse movement to be replied on the targetted web page. To record a new mouse movement, open a new tab in your favourite browser and copy the [`mouseCapture.js`](nodecode/mouseCapture.js) script into the JS console. Now you need to initialize the script in the console. To do so, use the `init` function and call it with the `height` and `width` parameters (by default, these ra eset to `1920x1200`). 
+
+```
+init(<height>, <width>);
+```
+or if you want to set the window size to default:
+```
+init();
+```
+
+The page layout should now change and a disabled button will appear on the top. Once you are ready, bring the focus on the iframe embedded in the browser window, hit the `ctrl` key and start browsing. Please note that the scrolling offset is also being recorded. Once you are done with browsing the page, you can hit the `ctrl` key again. Then, click on the `Print Result` button and copy the content of the page to a new file and locate it under `resources/mouseRecordings` folder.
+
+> NOTE: Make sure that you change the window height and wisth in the `eloki.properties` to match your recordings.
+
+To make it easier to record the mouse movement, you can uncomment the second line of the [`mouseCapture.js`](nodecode/mouseCapture.js) and upload it on your web server. Then, to start recording, you can run the following command on the browser's console:
+```
+import('http(s)://<domain></path>/mouseCapture.js').then(m => m.init(<height>, <width>));
+```
+To see and exmaple, you can visit `http://www.eloki.tk` and run the following in the console:
+```
+import('http://www.eloki.tk/mouseCapture.js').then(m => m.init());
+```
 
 > NOTE: Make sure to add the paths as the keys in the first line. Please take a look at [HDRP](#hard-disk-random-providers-hdrp) if you already have not.
 

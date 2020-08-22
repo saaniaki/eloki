@@ -44,6 +44,12 @@ public class Config {
     @Value("${useTor:false}")
     private boolean useTor;
 
+    @Value("${windowWidth:1920}")
+    private short windowWidth;
+
+    @Value("${windowHeight:1200}")
+    private short windowHeight;
+
     @Value("${geckoDriverPath:}")
     private String geckoDriverPath;
 
@@ -130,6 +136,22 @@ public class Config {
 
     public void setUseTor(boolean useTor) {
         this.useTor = useTor;
+    }
+
+    public short getWindowWidth() {
+        return windowWidth;
+    }
+
+    public void setWindowWidth(short windowWidth) {
+        this.windowWidth = windowWidth;
+    }
+
+    public short getWindowHeight() {
+        return windowHeight;
+    }
+
+    public void setWindowHeight(short windowHeight) {
+        this.windowHeight = windowHeight;
     }
 
     public String getGeckoDriverPath() {

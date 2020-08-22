@@ -15,6 +15,8 @@ import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.logging.Level;
@@ -24,6 +26,7 @@ import java.util.logging.Level;
 public final class Chrome extends SeleniumClient {
 
     private static final Logger logger = LoggerFactory.getLogger(Chrome.class);
+    private String agent;
 
     public Chrome(PathProvider pathProvider, BrowserProvider browserProvider,
                   Config config, MouseRecordingProvider mouseRecordingProvider) {
@@ -34,8 +37,9 @@ public final class Chrome extends SeleniumClient {
     protected WebDriver setUpWebDriver() {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless"); // "--auto-open-devtools-for-tabs"
-        options.addArguments("--window-size=1920,1200");
-//        options.addArguments("--user-agent=" + this.browserProvider.provideRandomElement()); TODO
+        options.addArguments("--window-size=" + this.config.getWindowWidth() + "," + this.config.getWindowHeight());
+//        this.agent = this.browserProvider.provideRandomElement();
+//        options.addArguments("--user-agent=" + this.browserProvider.provideRandomElement());
 
         if (this.config.useTor())
             options.addArguments("--proxy-server=socks5://127.0.0.1:9150");
@@ -56,7 +60,7 @@ public final class Chrome extends SeleniumClient {
         if (logger.isDebugEnabled()) {
             LogEntries logEntries = driver.manage().logs().get(LogType.BROWSER);
             for (LogEntry entry : logEntries)
-                logger.debug(new Date(entry.getTimestamp()) + " " + entry.getLevel() + " " + entry.getMessage());
+                logger.debug(new Date(entry.getTimestamp()) + " " + entry.getLevel() + " " + entry.getMessage() + " using " + this.agent);
         }
     }
 }

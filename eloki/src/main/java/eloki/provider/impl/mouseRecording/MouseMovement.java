@@ -1,6 +1,7 @@
 package eloki.provider.impl.mouseRecording;
 
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.PointerInput;
 
@@ -63,8 +64,8 @@ public class MouseMovement implements MouseEvent {
     }
 
     @Override
-    public void executeJs(JavascriptExecutor javascriptExecutor) {
-        javascriptExecutor.executeScript("window.scrollTo("
+    public void executeJs(WebDriver driver) {
+        ((JavascriptExecutor) driver).executeScript("window.scrollTo("
                 + (this.getScrollX())
                 + ", "
                 + (this.getScrollY())
@@ -72,8 +73,8 @@ public class MouseMovement implements MouseEvent {
     }
 
     @Override
-    public Actions buildActions(PointerInput pointerInput, Actions actions) {
-        return actions.tick(pointerInput.createPointerMove(
+    public void buildActions(PointerInput pointerInput, Actions actions) {
+        actions.tick(pointerInput.createPointerMove(
                 Duration.ofMillis(1),
                 PointerInput.Origin.viewport(),
                 this.getMouseX(),

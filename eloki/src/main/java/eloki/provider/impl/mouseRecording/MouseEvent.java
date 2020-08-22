@@ -1,6 +1,6 @@
 package eloki.provider.impl.mouseRecording;
 
-import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.PointerInput;
 
@@ -10,7 +10,7 @@ import org.openqa.selenium.interactions.PointerInput;
  * only supported by one of them.
  */
 public interface MouseEvent {
-    void executeJs(JavascriptExecutor javascriptExecutor);
+    void executeJs(WebDriver driver);
 
-    Actions buildActions(PointerInput pointerInput, Actions actions);
+    void buildActions(PointerInput pointerInput, Actions actions);
 }

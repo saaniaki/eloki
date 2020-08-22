@@ -32,15 +32,20 @@ public final class MouseRecordingProvider extends SelectiveCollectionHDRP<String
     }
 
     public MouseEvent toElement(String line) {
-        if (line.equals("click"))
-            return new MouseClickEvent();
-        else {
-            String[] parts = line.split(",");
-            short mx = Short.parseShort(parts[0]);
-            short my = Short.parseShort(parts[1]);
-            float sx = Float.parseFloat(parts[2]);
-            float sy = Float.parseFloat(parts[3]);
-            return new MouseMovement(mx, my, sx, sy);
+        switch (line) {
+            case "waiting":
+                return new WaitForPageLoadEvent();
+            case "click":
+                return new MouseClickEvent();
+            case "right_click":
+                return new MouseRightClickEvent();
+            default:
+                String[] parts = line.split(",");
+                short mx = Short.parseShort(parts[0]);
+                short my = Short.parseShort(parts[1]);
+                float sx = Float.parseFloat(parts[2]);
+                float sy = Float.parseFloat(parts[3]);
+                return new MouseMovement(mx, my, sx, sy);
         }
     }
 
