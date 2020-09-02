@@ -35,8 +35,8 @@ public final class Firefox extends SeleniumClient {
         options.addArguments("--headless");
         options.addArguments("--width=" + this.config.getWindowWidth());
         options.addArguments("--height=1200" + this.config.getWindowHeight());
-//        String agent = this.browserProvider.provideRandomElement();
-//        options.addPreference("general.useragent.override", agent);
+        String agent = this.browserProvider.provideRandomElement();
+        options.addPreference("general.useragent.override", agent);
 
         if (this.config.useTor()) {
             options.addPreference("network.proxy.socks", "127.0.0.1");

@@ -38,8 +38,8 @@ public final class Chrome extends SeleniumClient {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless"); // "--auto-open-devtools-for-tabs"
         options.addArguments("--window-size=" + this.config.getWindowWidth() + "," + this.config.getWindowHeight());
-//        this.agent = this.browserProvider.provideRandomElement();
-//        options.addArguments("--user-agent=" + this.browserProvider.provideRandomElement());
+        this.agent = this.browserProvider.provideRandomElement();
+        options.addArguments("--user-agent=" + this.browserProvider.provideRandomElement());
 
         if (this.config.useTor())
             options.addArguments("--proxy-server=socks5://127.0.0.1:9150");
